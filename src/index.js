@@ -23,7 +23,7 @@ module.exports = function(layoutData, options) {
   const renderData = {};
   const prettier = options.prettier;
   const _ = options._;
-  const raxImport = {};
+  const antdImport = {};
   const style = {};
   let mock = {};
 
@@ -37,63 +37,71 @@ module.exports = function(layoutData, options) {
     } else if (typeof json == 'object') {
       var type = json.componentType;
       var className = json.attrs.className;
+      var baseComponent = json.identification && json.identification.baseComponent;
+      var findComponent = false;
 
-      switch (type) {
-        case 'text':
-          var lines = json.style.lines;
-          var innerText;
+      if (baseComponent) {
+        switch (baseComponent) {
+          case 'input':
+            result += `<Input style={styles.${className}} />`;
+            antdImport[baseComponent] = `import {Input} from 'antd'`;
+            findComponent = true;
+            delete json.style.paddingRight;
+            json.style.width = json.attrs.__ARGS__.width;
+            break;
+          case 'switch':
+            result += `<Switch style={styles.${className}} />`;
+            antdImport[baseComponent] = `import {Switch} from 'antd'`;
+            findComponent = true;
+            break;
+          case 'rating':
+            result += `<Rate style={styles.${className}} />`;
+            antdImport[baseComponent] = `import {Rate} from 'antd'`;
+            findComponent = true;
+            if (typeof json.style.marginTop !== 'undefined') {
+              json.style.marginTop -= 6;
+            } else {
+              json.style.marginTop = -6;
+            }
+            break;
+          default:
+            break;
+        }
+        style[className] = json.style;
+      } 
 
-          if (json.tpl) {
-            innerText = `{dataSource.${json.tpl}}`;
-            mock = _.merge(mock, casHandler(json.tpl, json.innerText));
-          } else {
-            innerText = json.innerText;
-          }
+      if (!findComponent) {
+        switch (type) {
+          case 'text':
+            var lines = json.attrs.lines;
+            var innerText = json.innerText;
 
-          result += `<Text style={styles.${className}} numberOfLines={${lines}}>${innerText}</Text>`;
+            result += `<span style={styles.${className}}>${innerText}</span>`;
 
-          if (!raxImport[type]) {
-            raxImport[type] = `import Text from 'rax-text';`;
-          }
+            if (lines == 1 && !json.attrs.fixed) {
+              delete json.style.width;
+              delete json.style.height;
+            }
 
-          if (json.style.lines == 1) {
-            delete json.style.width;
-            delete json.style.height;
-          }
-
-          delete json.style.fontFamily;
-          delete json.style.lines;
-          break;
-        case 'view':
-          if (json.children && json.children.length > 0) {
-            result += `<View style={styles.${className}}>${json2jsx(
-              json.children
-            )}</View>`;
-          } else {
-            result += `<View style={styles.${className}} />`;
-          }
-          if (!raxImport[type]) {
-            raxImport[type] = `import View from 'rax-view';`;
-          }
-          break;
-        case 'picture':
-          var source;
-
-          if (json.tpl) {
-            source = `dataSource.${json.tpl}`;
-            mock = _.merge(mock, casHandler(json.tpl, json.attrs.src));
-          } else {
-            source = `'${json.attrs.src}'`;
-          }
-          result += `<Picture resizeMod={'contain'} style={styles.${className}} source={{uri: ${source}}} />`;
-
-          if (!raxImport[type]) {
-            raxImport[type] = `import Picture from 'rax-picture';`;
-          }
-          break;
-      }
-
-      style[className] = json.style;
+            delete json.style.fontFamily;
+            delete json.style.lines;
+            break;
+          case 'view':
+            if (json.children && json.children.length > 0) {
+              result += `<div style={styles.${className}}>${json2jsx(
+                json.children
+              )}</div>`;
+            } else {
+              result += `<div style={styles.${className}} />`;
+            }
+            break;
+          case 'picture':
+            var source = `${json.attrs.src}`;
+            result += `<img style={styles.${className}} src="${source}" />`;
+            break;
+        }
+        style[className] = json.style;
+      }      
     } else {
       return json
         .toString()
@@ -108,15 +116,10 @@ module.exports = function(layoutData, options) {
 
   // transform json
   var jsx = `${json2jsx(layoutData)}`;
-  var dataBinding =
-    Object.keys(mock).length > 0
-      ? 'var dataSource = this.props.dataSource;'
-      : '';
 
   renderData.modClass = `
     class Mod extends Component {
       render() {
-        ${dataBinding}
         return (
           ${jsx}
         );
@@ -124,14 +127,13 @@ module.exports = function(layoutData, options) {
     }
   `;
 
-  renderData.import = Object.keys(raxImport)
+  renderData.import = Object.keys(antdImport)
     .map(key => {
-      return raxImport[key];
+      return antdImport[key];
     })
     .join('\n');
-  renderData.mockData = `var mock = ${JSON.stringify(mock)}`;
   renderData.style = `var styles = ${JSON.stringify(style)}`;
-  renderData.export = `render(<Mod dataSource={mock} />);`;
+  renderData.export = `ReactDOM.render(<Mod />);`;
 
   const prettierOpt = {
     printWidth: 120,

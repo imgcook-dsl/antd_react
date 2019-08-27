@@ -1,12 +1,11 @@
 'use strict';
 
-import { createElement, Component, render } from 'rax';
-
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 {{{import}}}
+import "antd/dist/antd.css";
 
 {{{style}}}
-
-{{{mockData}}}
 
 {{{modClass}}}
 
