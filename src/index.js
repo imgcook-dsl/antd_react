@@ -133,7 +133,7 @@ module.exports = function(layoutData, options) {
     })
     .join('\n');
   renderData.style = `var styles = ${JSON.stringify(style)}`;
-  renderData.export = `ReactDOM.render(<Mod />);`;
+  renderData.export = `ReactDOM.render(<Mod />, document.getElementById("root"));`;
 
   const prettierOpt = {
     printWidth: 120,
