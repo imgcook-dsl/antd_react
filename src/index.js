@@ -217,12 +217,15 @@ module.exports = function(layoutData, options) {
     singleQuote: true
   };
 
-  console.log(jsx)
 
   return {
     renderData: renderData,
     xml: prettier.format(jsx, prettierOpt),
     style: prettier.format(renderData.style, prettierOpt),
-    prettierOpt: prettierOpt
+    prettierOpt: prettierOpt,
+    playground: {
+      info: '前往 playground',
+      link: 'https://codesandbox.io/s/funny-shape-33sie'
+    }
   };
 };
