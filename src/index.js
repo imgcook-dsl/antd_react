@@ -27,43 +27,120 @@ module.exports = function(layoutData, options) {
   const style = {};
   let mock = {};
 
-  function json2jsx(json) {
+  function findText(json) {
+    var text = '';
+    if (Array.isArray(json)) {
+      json.forEach(function(node) {
+        console.log('type', node.componentType)
+        text += findText(node);
+      });
+    } else {
+      if (json.componentType === 'text') {
+        text += json.attrs.text;
+      }
+    }
+
+    console.log('text', text)
+
+    return text;
+  }
+
+  function json2jsx(json, whitelist) {
     var result = '';
+
+    if (whitelist && !Array.isArray(json)) {
+      var component = json.smart && json.smart.layerProtocol && json.smart.layerProtocol.component;
+      if (!component || whitelist.indexOf(component.type) === -1) {
+        return result;
+      }
+    }
 
     if (!!json.length && typeof json != 'string') {
       json.forEach(function(node) {
-        result += json2jsx(node);
+        result += json2jsx(node, whitelist);
       });
     } else if (typeof json == 'object') {
       var type = json.componentType;
       var className = json.attrs.className;
-      var baseComponent = json.identification && json.identification.baseComponent;
       var findComponent = false;
+      var component = json.smart && json.smart.layerProtocol && json.smart.layerProtocol.component;
 
-      if (baseComponent) {
-        switch (baseComponent) {
-          case 'input':
-            result += `<Input style={styles.${className}} />`;
-            antdImport[baseComponent] = `import {Input} from 'antd'`;
+      if (component) {
+        switch (component.type) {
+          case 'InputGroup':
+            var compact = component.params && typeof component.params.compact !== 'undefined';
+            if (compact) {
+              result += `<Input.Group style={styles.${className}} compact>${json2jsx(json.children)}</Input.Group>`;
+            } else {
+              result += `<Input.Group style={styles.${className}}>${json2jsx(json.children)}</Input.Group>`;
+            }
             findComponent = true;
-            delete json.style.paddingRight;
+            break;
+          case 'Input':
+          case 'Select':
+            var text = findText(json.children);
+            var placeholder = component.params && typeof component.params.placeholder !== 'undefined';
+            var defaultValue = component.params && typeof component.params.defaultValue !== 'undefined';
+            json.style = {
+              width: json.attrs.__ARGS__.width,
+              height: json.attrs.__ARGS__.height
+            };
+
+            if (placeholder) {
+              result += `<${component.type} style={styles.${className}} placeholder="${text}" />`;
+            } else if (defaultValue) {
+              result += `<${component.type} style={styles.${className}} defaultValue="${text}" />`;
+            } else {
+              result += `<${component.type} style={styles.${className}} />`;
+            }
+            
+            antdImport[component.type] = `import {${component.type}} from 'antd'`;
+            findComponent = true;
+            // delete json.style.paddingRight;
             json.style.width = json.attrs.__ARGS__.width;
             break;
-          case 'switch':
-            result += `<Switch style={styles.${className}} />`;
-            antdImport[baseComponent] = `import {Switch} from 'antd'`;
-            findComponent = true;
-            break;
-          case 'rating':
-            result += `<Rate style={styles.${className}} />`;
-            antdImport[baseComponent] = `import {Rate} from 'antd'`;
-            findComponent = true;
-            if (typeof json.style.marginTop !== 'undefined') {
-              json.style.marginTop -= 6;
-            } else {
-              json.style.marginTop = -6;
+          case 'Button':
+            var text = findText(json.children);
+            if (type == 'picture') {
+              json.style = Object.assign({}, json.style, {
+                backgroundColor: json.attrs.originStyles.backgroundColor
+              });
             }
+
+            result += `<Button style={styles.${className}}>${text}</Button>`;
+            antdImport[component.type] = `import {Button} from 'antd'`;
+            findComponent = true;
             break;
+          case 'Steps':
+            json.style.width = json.attrs.__ARGS__.width;
+            result += `<Steps style={styles.${className}}>${json2jsx(json.children, ['Step'])}</Steps>`;
+            antdImport[component.type] = `import {Steps} from 'antd'`;
+            findComponent = true;
+            break;
+          case 'Step':
+            var text = json.attrs.text;
+            result += `<Steps.Step style={styles.${className}} title="${text}"></Steps.Step>`;
+            findComponent = true;
+            break;
+          case 'Breadcrumb':
+            result += `<Breadcrumb style={styles.${className}}>${json2jsx(json.children, ['Breadcrumb.Item'])}</Breadcrumb>`;
+            antdImport[component.type] = `import {Breadcrumb} from 'antd'`;
+            findComponent = true;
+            break;
+          case 'Breadcrumb.Item':
+            var text = json.attrs.text;
+            result += `<Breadcrumb.Item href="" style={styles.${className}}>${text}</Breadcrumb.Item>`;
+            findComponent = true;
+            break;
+          // case 'Menu':
+          //   var mode = component.params && component.params.mode || "vertical";
+          //   var theme = component.params && component.params.theme || "light";
+          //   result += `<Menu style={styles.${className}} mode="${mode}" theme="${theme}">${json2jsx(json.children)}</Menu>`;
+          //   antdImport[component.type] = `import {Menu} from 'antd'`;
+          //   break;
+          // case 'SubMenu':
+          // case 'Menu.Item':
+          // case 'Menu.ItemGroup':
           default:
             break;
         }
@@ -116,7 +193,7 @@ module.exports = function(layoutData, options) {
 
   // transform json
   var jsx = `${json2jsx(layoutData)}`;
-
+  
   renderData.modClass = `
     class Mod extends Component {
       render() {
@@ -133,12 +210,14 @@ module.exports = function(layoutData, options) {
     })
     .join('\n');
   renderData.style = `var styles = ${JSON.stringify(style)}`;
-  renderData.export = `ReactDOM.render(<Mod />, document.getElementById("root"));`;
+  renderData.export = `ReactDOM.render(<Mod />, document.getElementById("container"));`;
 
   const prettierOpt = {
     printWidth: 120,
     singleQuote: true
   };
+
+  console.log(jsx)
 
   return {
     renderData: renderData,

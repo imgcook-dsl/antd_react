@@ -1,0 +1,744 @@
+"use strict";
+
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import { Breadcrumb } from "antd";
+import { Steps } from "antd";
+import { Select } from "antd";
+import { Input } from "antd";
+import { Button } from "antd";
+import "antd/dist/antd.css";
+
+var styles = {
+  actionBg: { opacity: "1.00", marginTop: 16, marginLeft: 24, width: 174, height: 32 },
+  view: {
+    display: "flex",
+    alignItems: "flex-start",
+    flexDirection: "column",
+    marginTop: 16,
+    backgroundColor: "#001529",
+    width: 256,
+    height: 914
+  },
+  ybp: { opacity: "1.00", width: 14, height: 14 },
+  word: { marginLeft: 12, lineHeight: "22px", whiteSpace: "nowrap", color: "#ffffff", fontSize: 14, fontWeight: 500 },
+  group: { display: "flex", alignItems: "center", flexDirection: "row", height: 22 },
+  yonghuxinxi: { width: 10, height: 6 },
+  yonghuxinxiWrap: { display: "flex", alignItems: "center", flexDirection: "row", marginTop: 5 },
+  block: {
+    boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 24,
+    paddingRight: 15,
+    paddingLeft: 24,
+    width: 256
+  },
+  word_2: {
+    opacity: "0.65",
+    marginLeft: 50,
+    maxWidth: 194,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  text: { marginLeft: 50, lineHeight: "22px", whiteSpace: "nowrap", color: "#ffffff", fontSize: 14, fontWeight: 400 },
+  group_2: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    marginTop: 9,
+    backgroundColor: "#1890ff",
+    width: 256,
+    height: 40
+  },
+  txt: {
+    opacity: "0.65",
+    marginLeft: 50,
+    maxWidth: 59,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  yonghuxinxi_2: { width: 10, height: 6 },
+  yonghuxinxiWrap_2: { display: "flex", alignItems: "center", flexDirection: "row", marginTop: 5, marginLeft: 122 },
+  block_2: { display: "flex", flexDirection: "row", marginTop: 9 },
+  text_2: {
+    opacity: "0.65",
+    marginTop: 18,
+    marginLeft: 74,
+    maxWidth: 170,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  txt_2: {
+    opacity: "0.65",
+    marginTop: 18,
+    marginLeft: 74,
+    maxWidth: 170,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  word_3: {
+    opacity: "0.65",
+    marginLeft: 50,
+    maxWidth: 59,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  tongyi: { opacity: "0.45", width: 10, height: 6 },
+  tongyiWrap: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    opacity: 0.45,
+    marginTop: 5,
+    marginLeft: 122
+  },
+  group_3: { display: "flex", flexDirection: "row", marginTop: 18 },
+  block_3: {
+    backgroundColor: "#000c17",
+    width: 256,
+    height: 240,
+    boxShadow: "inset 0px 2px 8px rgba(0, 0, 0, 0.45)",
+    display: "flex",
+    alignItems: "flex-start",
+    flexDirection: "column",
+    justifyContent: "center",
+    marginTop: 15
+  },
+  color: { display: "flex", backgroundColor: "#001a33", width: 256, height: 1 },
+  iconTest: { opacity: "1.00", width: 14, height: 14 },
+  text_3: {
+    opacity: "0.65",
+    marginLeft: 12,
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  block_4: { display: "flex", alignItems: "center", flexDirection: "row", height: 22 },
+  tongyi_2: { opacity: "0.45", width: 10, height: 6 },
+  tongyiWrap_2: { display: "flex", alignItems: "center", flexDirection: "row", opacity: 0.45, marginTop: 5 },
+  block_5: {
+    boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 14,
+    paddingRight: 15,
+    paddingLeft: 24,
+    width: 256
+  },
+  fanghuofenquHui: { opacity: "1.00", width: 14, height: 13 },
+  txt_3: {
+    opacity: "0.65",
+    marginLeft: 12,
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  block_6: { display: "flex", alignItems: "center", flexDirection: "row", height: 22 },
+  tongyi_3: { opacity: "0.45", width: 10, height: 6 },
+  tongyiWrap_3: { display: "flex", alignItems: "center", flexDirection: "row", opacity: 0.45, marginTop: 5 },
+  block_7: {
+    boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 32,
+    paddingRight: 15,
+    paddingLeft: 24,
+    width: 256
+  },
+  menu: { opacity: "1.00", width: 14, height: 14 },
+  word_4: {
+    opacity: "0.65",
+    marginLeft: 12,
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  block_8: { display: "flex", alignItems: "center", flexDirection: "row", height: 22 },
+  tongyi_4: { opacity: "0.45", width: 10, height: 6 },
+  tongyiWrap_4: { display: "flex", alignItems: "center", flexDirection: "row", opacity: 0.45, marginTop: 5 },
+  block_9: {
+    boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 32,
+    paddingRight: 15,
+    paddingLeft: 24,
+    width: 256
+  },
+  qiyong: { opacity: "1.00", marginTop: 4, marginLeft: 24, width: 14, height: 14 },
+  word_5: {
+    opacity: "0.65",
+    marginLeft: 12,
+    maxWidth: 193,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  block_10: { display: "flex", flexDirection: "row", marginTop: 32 },
+  menu_2: { opacity: "1.00", marginTop: 4, marginLeft: 24, width: 15, height: 14 },
+  text_4: {
+    opacity: "0.65",
+    marginLeft: 11,
+    maxWidth: 193,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  block_11: { display: "flex", flexDirection: "row", marginTop: 32 },
+  primary: {
+    backgroundColor: "#002140",
+    width: 256,
+    height: 978,
+    boxShadow: "2px 0px 6px rgba(0, 21, 41, 0.35)",
+    display: "flex",
+    alignItems: "flex-start",
+    flexDirection: "column",
+    marginTop: 1
+  },
+  txt_4: {
+    opacity: "0.45",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400,
+    lines: 1
+  },
+  text_5: {
+    opacity: "0.45",
+    marginLeft: 8,
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400,
+    lines: 1
+  },
+  word_7: {
+    opacity: "0.65",
+    marginLeft: 8,
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400,
+    lines: 1
+  },
+  block_12: {
+    display: "flex",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    height: 22,
+    marginTop: 80,
+    marginLeft: 32
+  },
+  txt_6: {
+    opacity: "0.85",
+    marginTop: 16,
+    marginLeft: 32,
+    maxWidth: 1140,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "28px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 20,
+    fontWeight: 500
+  },
+  summary: {
+    opacity: "0.65",
+    marginTop: 16,
+    marginLeft: 32,
+    maxWidth: 1140,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  block_13: {
+    display: "flex",
+    alignItems: "flex-start",
+    flexDirection: "column",
+    borderBottomWidth: 1,
+    borderBottomStyle: "solid",
+    borderBottomColor: "rgba(233,233,233,1)",
+    backgroundColor: "#ffffff",
+    width: 1184,
+    height: 200
+  },
+  info: {
+    opacity: "0.85",
+    marginTop: 4,
+    marginLeft: 8,
+    lineHeight: "24px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 16,
+    fontWeight: 500,
+    lines: 1
+  },
+  info_2: {
+    opacity: "0.45",
+    marginTop: 4,
+    marginLeft: 8,
+    lineHeight: "24px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 16,
+    fontWeight: 400,
+    lines: 1
+  },
+  text_6: {
+    opacity: "0.45",
+    marginTop: 4,
+    marginLeft: 8,
+    lineHeight: "24px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 16,
+    fontWeight: 400,
+    lines: 1
+  },
+  group_5: { display: "flex", alignItems: "flex-start", flexDirection: "row", height: 32, width: 792 },
+  block_15: { display: "flex", flexDirection: "row", justifyContent: "center", marginTop: 40, width: 1135 },
+  text_7: {
+    opacity: "0.85",
+    marginTop: 5,
+    marginLeft: 293,
+    maxWidth: 395,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  container: { width: 435, height: 32 },
+  group_6: { display: "flex", flexDirection: "row", marginTop: 40 },
+  txt_7: {
+    opacity: "0.85",
+    marginTop: 5,
+    marginLeft: 293,
+    maxWidth: 395,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  outer_2: { width: 87, height: 32 },
+  block_16: { width: 348, height: 32 },
+  block_17: {
+    display: "flex",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    height: 32,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderRadius: 4,
+    borderColor: "rgba(217,217,217,1.00)",
+    backgroundColor: "#ffffff",
+    width: 435
+  },
+  block_18: { display: "flex", flexDirection: "row", marginTop: 32 },
+  info_3: {
+    opacity: "0.85",
+    marginTop: 4,
+    marginLeft: 279,
+    maxWidth: 409,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  tagWrap: { width: 435, height: 32 },
+  group_7: { display: "flex", flexDirection: "row", marginTop: 33 },
+  text_9: {
+    opacity: "0.85",
+    marginTop: 5,
+    marginLeft: 293,
+    maxWidth: 395,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  tagWrap_2: { width: 435, height: 32 },
+  block_19: { display: "flex", flexDirection: "row", marginTop: 31 },
+  mark: { position: "absolute", top: 0, left: 0, width: 74, height: 32, backgroundColor: "rgba(24,144,255,1)" },
+  txt_8: {
+    position: "relative",
+    maxWidth: 46,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  markWrap: {
+    display: "flex",
+    position: "relative",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    width: 74,
+    height: 32
+  },
+  group_8: {
+    display: "flex",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    height: 32,
+    marginTop: 32,
+    marginLeft: 363
+  },
+  line: { width: 1072, height: 1 },
+  lineWrap: { display: "flex", flexDirection: "row", justifyContent: "center", marginTop: 40, width: 1135 },
+  text_10: {
+    opacity: "0.45",
+    marginTop: 24,
+    marginLeft: 80,
+    maxWidth: 1044,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "24px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 16,
+    fontWeight: 500
+  },
+  info_4: {
+    opacity: "0.45",
+    marginTop: 12,
+    marginLeft: 80,
+    maxWidth: 1044,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 500
+  },
+  article: {
+    opacity: "0.45",
+    marginTop: 4,
+    marginLeft: 80,
+    maxWidth: 1044,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  info_5: {
+    opacity: "0.45",
+    marginTop: 12,
+    marginLeft: 80,
+    maxWidth: 1044,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 500
+  },
+  article_2: {
+    opacity: "0.45",
+    marginTop: 4,
+    marginLeft: 80,
+    maxWidth: 1044,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  block_20: {
+    display: "flex",
+    alignItems: "flex-start",
+    flexDirection: "column",
+    borderRadius: 2,
+    backgroundColor: "#ffffff",
+    width: 1136,
+    height: 633
+  },
+  view_2: { display: "flex", flexDirection: "row", justifyContent: "center", marginTop: 24, width: 1183 },
+  text_11: {
+    opacity: "0.45",
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  txt_9: {
+    opacity: "0.45",
+    marginLeft: 40,
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  word_9: {
+    opacity: "0.45",
+    marginLeft: 40,
+    lineHeight: "22px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 14,
+    fontWeight: 400
+  },
+  block_21: { display: "flex", flexDirection: "row", justifyContent: "center", marginTop: 48, width: 1183 },
+  copyright: {
+    opacity: "0.45",
+    lineHeight: "20px",
+    whiteSpace: "nowrap",
+    color: "#000000",
+    fontSize: 12,
+    fontWeight: 400
+  },
+  banquan: { opacity: "1.00", marginTop: 4, marginLeft: 4, width: 12, height: 12 },
+  desc: {
+    opacity: "0.45",
+    marginLeft: 4,
+    lineHeight: "20px",
+    whiteSpace: "pre",
+    color: "#000000",
+    fontSize: 12,
+    fontWeight: 400
+  },
+  view_3: { display: "flex", flexDirection: "row", justifyContent: "center", marginTop: 8, width: 1183 },
+  side: { display: "flex", alignItems: "flex-start", flexDirection: "column", height: 979 },
+  box: {
+    display: "flex",
+    alignItems: "flex-start",
+    flexDirection: "row",
+    backgroundColor: "#f0f2f5",
+    width: 1440,
+    height: 979
+  }
+};
+
+class Mod extends Component {
+  render() {
+    return (
+      <div style={styles.box}>
+        <div style={styles.primary}>
+          <img style={styles.actionBg} src="https://img.alicdn.com/tfs/TB1HfQOjYj1gK0jSZFOXXc7GpXa-348-64.png" />
+          <div style={styles.view}>
+            <div style={styles.block}>
+              <div style={styles.group}>
+                <img style={styles.ybp} src="https://img.alicdn.com/tfs/TB1Sj7HjVY7gK0jSZKzXXaikpXa-28-28.png" />
+                <span style={styles.word}>一级导航</span>
+              </div>
+              <div style={styles.yonghuxinxiWrap}>
+                <img
+                  style={styles.yonghuxinxi}
+                  src="https://img.alicdn.com/tfs/TB1yFEOj4D1gK0jSZFyXXciOVXa-22-12.png"
+                />
+              </div>
+            </div>
+            <div style={styles.block_3}>
+              <span style={styles.word_2}>二级导航</span>
+              <div style={styles.group_2}>
+                <span style={styles.text}>二级导航</span>
+              </div>
+              <div style={styles.block_2}>
+                <span style={styles.txt}>二级导航</span>
+                <div style={styles.yonghuxinxiWrap_2}>
+                  <img
+                    style={styles.yonghuxinxi_2}
+                    src="https://img.alicdn.com/tfs/TB1cQoJj.D1gK0jSZFGXXbd3FXa-22-12.png"
+                  />
+                </div>
+              </div>
+              <span style={styles.text_2}>三级导航</span>
+              <span style={styles.txt_2}>三级导航</span>
+              <div style={styles.group_3}>
+                <span style={styles.word_3}>二级导航</span>
+                <div style={styles.tongyiWrap}>
+                  <img style={styles.tongyi} src="https://img.alicdn.com/tfs/TB1XKz.jV67gK0jSZPfXXahhFXa-22-12.png" />
+                </div>
+              </div>
+            </div>
+            <div style={styles.color} />
+            <div style={styles.block_5}>
+              <div style={styles.block_4}>
+                <img style={styles.iconTest} src="https://img.alicdn.com/tfs/TB18koJj.D1gK0jSZFGXXbd3FXa-28-28.png" />
+                <span style={styles.text_3}>一级导航</span>
+              </div>
+              <div style={styles.tongyiWrap_2}>
+                <img style={styles.tongyi_2} src="https://img.alicdn.com/tfs/TB1Q5ANj8r0gK0jSZFnXXbRRXXa-22-12.png" />
+              </div>
+            </div>
+            <div style={styles.block_7}>
+              <div style={styles.block_6}>
+                <img
+                  style={styles.fanghuofenquHui}
+                  src="https://img.alicdn.com/tfs/TB1zTQNjYY1gK0jSZTEXXXDQVXa-28-26.png"
+                />
+                <span style={styles.txt_3}>一级导航</span>
+              </div>
+              <div style={styles.tongyiWrap_3}>
+                <img style={styles.tongyi_3} src="https://img.alicdn.com/tfs/TB1xpUJj.Y1gK0jSZFMXXaWcVXa-22-12.png" />
+              </div>
+            </div>
+            <div style={styles.block_9}>
+              <div style={styles.block_8}>
+                <img style={styles.menu} src="https://img.alicdn.com/tfs/TB1d6ZMj4v1gK0jSZFFXXb0sXXa-28-28.png" />
+                <span style={styles.word_4}>一级导航</span>
+              </div>
+              <div style={styles.tongyiWrap_4}>
+                <img style={styles.tongyi_4} src="https://img.alicdn.com/tfs/TB1ey.Mj7T2gK0jSZPcXXcKkpXa-22-12.png" />
+              </div>
+            </div>
+            <div style={styles.block_10}>
+              <img style={styles.qiyong} src="https://img.alicdn.com/tfs/TB1VLkKj9f2gK0jSZFPXXXsopXa-28-28.png" />
+              <span style={styles.word_5}>一级导航</span>
+            </div>
+            <div style={styles.block_11}>
+              <img style={styles.menu_2} src="https://img.alicdn.com/tfs/TB18ez.jV67gK0jSZPfXXahhFXa-30-28.png" />
+              <span style={styles.text_4}>一级导航</span>
+            </div>
+          </div>
+        </div>
+        <div style={styles.side}>
+          <div style={styles.block_13}>
+            <Breadcrumb style={styles.block_12}>
+              <Breadcrumb.Item style={styles.txt_4}>一级菜单</Breadcrumb.Item>
+              <Breadcrumb.Item style={styles.text_5}>二级菜单</Breadcrumb.Item>
+              <Breadcrumb.Item style={styles.word_7}>三级菜单</Breadcrumb.Item>
+            </Breadcrumb>
+            <span style={styles.txt_6}>分布表单</span>
+            <span style={styles.summary}>将表单内容进行分步可以提高用户处理的专注度，降低页面的复杂性。</span>
+          </div>
+          <div style={styles.view_2}>
+            <div style={styles.block_20}>
+              <div style={styles.block_15}>
+                <Steps style={styles.group_5}>
+                  <Steps.Step style={styles.info} title="填写转账信息"></Steps.Step>
+                  <Steps.Step style={styles.info_2} title="确认转账信息"></Steps.Step>
+                  <Steps.Step style={styles.text_6} title="完成"></Steps.Step>
+                </Steps>
+              </div>
+              <div style={styles.group_6}>
+                <span style={styles.text_7}>付款账户：</span>
+                <Select style={styles.container} placeholder="AntDesign@example.com" />
+              </div>
+              <div style={styles.block_18}>
+                <span style={styles.txt_7}>收款账户：</span>
+                <Input.Group style={styles.block_17} compact>
+                  <Select style={styles.outer_2} defaultValue="支付宝" />
+                  <Input style={styles.block_16} />
+                </Input.Group>
+              </div>
+              <div style={styles.group_7}>
+                <span style={styles.info_3}>收款人姓名：</span>
+                <Input style={styles.tagWrap} placeholder="请输入" />
+              </div>
+              <div style={styles.block_19}>
+                <span style={styles.text_9}>转账金额：</span>
+                <Input style={styles.tagWrap_2} />
+              </div>
+              <div style={styles.group_8}>
+                <div style={styles.markWrap}>
+                  <Button style={styles.mark}></Button>
+                  <span style={styles.txt_8}>下一步</span>
+                </div>
+              </div>
+              <div style={styles.lineWrap}>
+                <img style={styles.line} src="https://img.alicdn.com/tfs/TB10KQNj4D1gK0jSZFKXXcJrVXa-2144-2.png" />
+              </div>
+              <span style={styles.text_10}>说明</span>
+              <span style={styles.info_4}>转账到支付宝账户</span>
+              <span style={styles.article}>
+                如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。这里可以放一些关于产品的常见问题说明。
+              </span>
+              <span style={styles.info_5}>转账到银行卡</span>
+              <span style={styles.article_2}>
+                如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。这里可以放一些关于产品的常见问题说明。
+              </span>
+            </div>
+          </div>
+          <div style={styles.block_21}>
+            <span style={styles.text_11}>帮助</span>
+            <span style={styles.txt_9}>隐私</span>
+            <span style={styles.word_9}>条款</span>
+          </div>
+          <div style={styles.view_3}>
+            <span style={styles.copyright}>Copyright</span>
+            <img style={styles.banquan} src="https://img.alicdn.com/tfs/TB1jjcMj7T2gK0jSZPcXXcKkpXa-24-24.png" />
+            <span style={styles.desc}>2017 蚂蚁金服体验技术部出品</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<Mod />, document.getElementById("container"));

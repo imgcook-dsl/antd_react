@@ -26,15 +26,14 @@ co(function*() {
     originData: originData
   });
   const renderData = renderInfo.renderData;
+
   const ret = yield xtplRender(
     path.resolve(__dirname, '../src/template.xtpl'),
     renderData,
     {}
   );
 
-  console.log(
-    prettier.format(ret, {
+  fs.writeFileSync("test.html", prettier.format(ret, {
       printWidth: 120
-    })
-  );
+    }))
 });
